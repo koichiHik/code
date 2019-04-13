@@ -454,17 +454,26 @@ void MultiCameraPnP::PruneMatchesBasedOnF() {
 }
 
 void MultiCameraPnP::RecoverDepthFromImages() {
-	if(!features_matched) 
+
+	if(!features_matched) {
 		OnlyMatchFeatures();
+	}
 	
 	std::cout << "======================================================================\n";
 	std::cout << "======================== Depth Recovery Start ========================\n";
 	std::cout << "======================================================================\n";
 	
+	// X. 精度の悪いマッチングは削る．
 	PruneMatchesBasedOnF();
+
+	// X. 求まったマッチングから三角測量．
 	GetBaseLineTriangulation();
+
+	// X. 逐次バンドル調整．
 	AdjustCurrentBundle();
-	update(); //notify listeners
+
+	// X. リスナ更新．
+	update();
 	
 	cv::Matx34d P1 = Pmats[m_second_view];
 	cv::Mat_<double> t = (cv::Mat_<double>(1,3) << P1(0,3), P1(1,3), P1(2,3));

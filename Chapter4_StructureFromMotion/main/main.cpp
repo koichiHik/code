@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 	// X. 深度計算．
 	distance->RecoverDepthFromImages();
 
-	//get the scale of the result cloud using PCA
+	// X. 点群のサイズ感をみて，描画サイズを調整．
 	double scale_cameras_down = 1.0;
 	{
 		vector<cv::Point3d> cld = distance->getPointCloud();
@@ -122,5 +122,6 @@ int main(int argc, char** argv) {
 //			   distance->getPointCloudRGBBeforeBA()
 //			   );
 
+	// X. Visualization のスレッドを Join する．
 	WaitForVisualizationThread();
 }

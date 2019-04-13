@@ -300,10 +300,10 @@ boost::thread* _t = NULL;
 void RunVisualizationThread() {
 	_t = new boost::thread(RunVisualizationOnly);
 }
+
 void WaitForVisualizationThread() {
 	_t->join();
 }
-
 
 void PopulatePCLPointCloud(const pcl::PointCloud<pcl::PointXYZRGB>::Ptr& mycloud,
 						   const vector<cv::Point3d>& pointcloud, 

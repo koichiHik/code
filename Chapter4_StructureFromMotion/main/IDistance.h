@@ -9,7 +9,8 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef I_DISTANCE_H
+#define I_DISTANCE_H
 
 #define STRATEGY_USE_OPTICAL_FLOW		1
 #define STRATEGY_USE_DENSE_OF			2
@@ -23,3 +24,5 @@ public:
 	virtual std::vector<cv::Point3d> getPointCloud() = 0;
 	virtual const std::vector<cv::Vec3b>& getPointCloudRGB() = 0;
 };
+
+#endif // I_DISTANCE_H
