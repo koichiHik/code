@@ -54,9 +54,15 @@ public:
     std::vector<cv::Point3d> getPointCloud() { return CloudPointsToPoints(pointcloud); }
     const cv::Mat& getleft_im_orig() { return left_im_orig; }
     const cv::Mat& getright_im_orig() { return right_im_orig; }
-    const std::vector<cv::KeyPoint>& getcorrespImg1Pt() { return correspImg1Pt; }
-    const std::vector<cv::Vec3b>& getPointCloudRGB() { return std::vector<cv::Vec3b>();}
-        //c'tor
+
+    const std::vector<cv::KeyPoint>& getcorrespImg1Pt() { 
+        return correspImg1Pt; 
+    }
+
+    const std::vector<cv::Vec3b>& getPointCloudRGB() { 
+        return std::vector<cv::Vec3b>();
+    }
+
     Distance(const cv::Mat& left_im_, const cv::Mat& right_im_):
         features_matched(false)
     {

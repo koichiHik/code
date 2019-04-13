@@ -27,27 +27,36 @@
 #include "feature2d/IFeatureMatcher.h"
 #include "calib3d/FindCameraMatrices.h"
 
-class MultiCameraDistance  : public IDistance {	
-protected:
-	std::vector<std::vector<cv::KeyPoint> > imgpts;
-	std::vector<std::vector<cv::KeyPoint> > fullpts;
-	std::vector<std::vector<cv::KeyPoint> > imgpts_good;
-
-	std::map<std::pair<int,int> ,std::vector<cv::DMatch> > matches_matrix;
-	
-	std::vector<cv::Mat_<cv::Vec3b> > imgs_orig;
-	std::vector<cv::Mat> imgs;
-	std::vector<std::string> imgs_names;
-	
-	std::map<int,cv::Matx34d> Pmats;
-
+struct CamParams {
 	cv::Mat K;
 	cv::Mat_<double> Kinv;
-	
-	cv::Mat cam_matrix,distortion_coeff;
-	cv::Mat distcoeff_32f; 
-	cv::Mat K_32f;
+	cv::Mat K32f;
+	cv::Mat camMat;
+	cv::Mat distCoeff;
+	cv::Mat distCoeff32f; 
+};
 
+class MultiCameraDistance  : public IDistance {	
+protected:
+	// Feature Points
+	std::vector<std::vector<cv::KeyPoint> > m_imgPts;
+	std::vector<std::vector<cv::KeyPoint> > m_imgPtsGood;
+	
+	// Images
+	std::vector<std::string> m_imgNames;
+	std::vector<cv::Mat_<cv::Vec3b> > m_originalImgs;
+	std::vector<cv::Mat> m_convertedImgs;
+
+	// Matching Matrix
+	std::map<std::pair<int,int> ,std::vector<cv::DMatch> > m_matchesMatrix;
+
+	// Pose Matrices
+	std::map<int,cv::Matx34d> m_poseMats;
+
+	// Camera Parameters
+	CamParams m_camPar;
+
+	// Point Cloud
 	std::vector<CloudPoint> pcloud;
 	std::vector<cv::Vec3b> pointCloudRGB;
 	std::vector<cv::KeyPoint> correspImg1Pt; //TODO: remove
@@ -59,13 +68,24 @@ public:
 	bool use_rich_features;
 	bool use_gpu;
 
-	std::vector<cv::Point3d> getPointCloud() { return CloudPointsToPoints(pcloud); }
-	const cv::Mat& get_im_orig(int frame_num) { return imgs_orig[frame_num]; }
-	const std::vector<cv::KeyPoint>& getcorrespImg1Pt() { return correspImg1Pt; }
+	std::vector<cv::Point3d> getPointCloud() { 
+		return CloudPointsToPoints(pcloud); 
+	}
+
+	const cv::Mat& get_im_orig(int frame_num) {
+		return m_originalImgs[frame_num]; 
+	}
+
+	const std::vector<cv::KeyPoint>& getcorrespImg1Pt() { 
+		return correspImg1Pt; 
+	}
+
 	const std::vector<cv::Vec3b>& getPointCloudRGB() { if(pointCloudRGB.size()==0) { GetRGBForPointCloud(pcloud,pointCloudRGB); } return pointCloudRGB; }
 	std::vector<cv::Matx34d> getCameras() { 
 		std::vector<cv::Matx34d> v; 
-		for(std::map<int ,cv::Matx34d>::const_iterator it = Pmats.begin(); it != Pmats.end(); ++it ) {
+		for(std::map<int ,cv::Matx34d>::const_iterator it = m_poseMats.begin(); 
+				it != m_poseMats.end();
+				++it ) {
 			v.push_back( it->second );
 		}
 		return v;
