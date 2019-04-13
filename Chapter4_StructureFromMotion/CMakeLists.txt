@@ -10,10 +10,9 @@ endif()
 
 set(SSBA_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/3rdparty/SSBA-3.0/build" CACHE PATH "Directory to find SSBA libs")
 find_package(OpenCV REQUIRED CONFIG PATHS ${OpenCV_DIR} NO_DEFAULT_PATH)
-
 find_package(CUDA REQUIRED)
-
 find_package(OpenMP REQUIRED)
+
 link_directories(
 	${SSBA_LIBRARY_DIR}
   ${OpenCV_INSTALL_PATH}
@@ -35,21 +34,21 @@ set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D__SFM__DEBUG__" )
 
 # Core functions of SfM
 file(GLOB SFM_LIB_SOURCES	
-	#Distance.* 
-	Triangulation.* 
-	FindCameraMatrices.*
-	MultiCameraDistance.*
-	IDistance.*
-	MultiCameraPnP.*
-	Common.*
-	IFeatureMatcher.*
-	RichFeatureMatcher.*
-	OFFeatureMatcher.*
-	BundleAdjuster.*
-	GPUSURFFeatureMatcher.*
-	#AbstractFeatureMatcher.*
-	SfMUpdateListener.*
+	calib3d/Triangulation.* 
+	calib3d/FindCameraMatrices.*
+	calib3d/MultiCameraPnP.*
+	common/Common.*
+	feature2d/IFeatureMatcher.*
+	feature2d/RichFeatureMatcher.*
+	feature2d/OFFeatureMatcher.*
+	feature2d/GPUSURFFeatureMatcher.*
+	bundleadjust/BundleAdjuster.*
+	visualize/SfMUpdateListener.*
+	main/MultiCameraDistance.*
+	main/IDistance.*
 )
+
+include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 add_library( ExploringSfMLibrary ${SFM_LIB_SOURCES} )
 if(MSVC)
@@ -67,14 +66,12 @@ if(APPLE)
 	set_target_properties(ExploringSfMLibrary PROPERTIES LINK_FLAGS "-fopenmp")
 endif()
 
-
 # UI part
 add_executable(ExploringSfMExec 
-	Visualization.cpp
-	Visualization.h
-	main.cpp
+	visualize/Visualization.cpp
+	visualize/Visualization.h
+	main/main.cpp
 	)
-
 
 target_link_libraries(ExploringSfMExec 
 			ExploringSfMLibrary

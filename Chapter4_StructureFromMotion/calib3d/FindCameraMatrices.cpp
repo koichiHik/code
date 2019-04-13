@@ -9,13 +9,18 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#include "FindCameraMatrices.h"
-#include "Triangulation.h"
-
-#include <vector>
+// Standard
 #include <iostream>
 
+// STL
+#include <vector>
+
+// OpenCV
 #include <opencv2/calib3d/calib3d.hpp>
+
+// Original
+#include "calib3d/FindCameraMatrices.h"
+#include "calib3d/Triangulation.h"
 
 using namespace cv;
 using namespace std;

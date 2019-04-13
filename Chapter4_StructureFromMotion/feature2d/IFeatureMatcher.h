@@ -9,16 +9,19 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef IFEATURE_MATCHER_H
+#define IFEATURE_MATCHER_H
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/features2d/features2d.hpp>
+// STL
 #include <vector>
 
-#include "IDistance.h"
+// OpenCV
+#include <opencv2/core/core.hpp>
+#include <opencv2/features2d/features2d.hpp>
 
-#include "Common.h"
-
+// Original
+#include "common/Common.h"
+#include "main/IDistance.h"
 
 /**
  Feature Matching Interface
@@ -28,3 +31,5 @@ public:
 	virtual void MatchFeatures(int idx_i, int idx_j, std::vector<cv::DMatch>* matches) = 0;
 	virtual std::vector<cv::KeyPoint> GetImagePoints(int idx) = 0;
 };
+
+#endif // IFEATURE_MATCHER_H

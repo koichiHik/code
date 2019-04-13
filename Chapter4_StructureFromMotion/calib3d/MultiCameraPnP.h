@@ -9,11 +9,12 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef MULTI_CAMERA_PNP_H
+#define MULTI_CAMERA_PNP_H
 
-#include "MultiCameraDistance.h"
-#include "Common.h"
-#include "SfMUpdateListener.h"
+#include "common/Common.h"
+#include "main/MultiCameraDistance.h"
+#include "visualize/SfMUpdateListener.h"
 
 class MultiCameraPnP : public MultiCameraDistance {
 	std::vector<CloudPoint> pointcloud_beforeBA;
@@ -89,3 +90,5 @@ private:
 								 getCameras());
     }
 };
+
+#endif // MULTI_CAMERA_PNP_H

@@ -9,16 +9,19 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
+// STD
 #include <iostream>
 #include <string.h>
 
-#include "Distance.h"
-#include "MultiCameraPnP.h"
-#include "Visualization.h"
+// OpenCV
+#include <opencv2/gpu/gpu.hpp>
+
+// Original
+#include "main/Distance.h"
+#include "calib3d/MultiCameraPnP.h"
+#include "visualize/Visualization.h"
 
 using namespace std;
-
-#include <opencv2/gpu/gpu.hpp>
 
 class VisualizerListener : public SfMUpdateListener {
 public:
@@ -107,7 +110,6 @@ int main(int argc, char** argv) {
 							   distance->getPointCloudRGBBeforeBA(),
 							   distance->getCameras());
 							   
-
 	//ShowCloud(distance->getPointCloud(), 
 	//		   distance->getPointCloudRGB(),
 	//		   "baseline_only");
@@ -119,5 +121,6 @@ int main(int argc, char** argv) {
 //			   distance->getPointCloudBeforeBA(),
 //			   distance->getPointCloudRGBBeforeBA()
 //			   );
+
 	WaitForVisualizationThread();
 }

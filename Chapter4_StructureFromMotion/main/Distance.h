@@ -9,16 +9,21 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef DISTANCE_H
+#define DISTANCE_H
 
-#include <opencv2/opencv.hpp>
+// STL
 #include <vector>
 
-#include "Common.h"
-#include "IDistance.h"
-#include "Triangulation.h"
-#include "FindCameraMatrices.h"
-#include "RichFeatureMatcher.h"
+// OpenCV
+#include <opencv2/opencv.hpp>
+
+// Original
+#include "common/Common.h"
+#include "main/IDistance.h"
+#include "calib3d/Triangulation.h"
+#include "calib3d/FindCameraMatrices.h"
+#include "feature2d/RichFeatureMatcher.h"
 
 class Distance : public IDistance {
 private:
@@ -114,3 +119,5 @@ public:
 		TriangulatePoints(pt_set1, pt_set2, K, Kinv,distortion_coeff, P, P1, pointcloud, correspImg1Pt);
 	}
 };
+
+#endif // DISTANCE_H

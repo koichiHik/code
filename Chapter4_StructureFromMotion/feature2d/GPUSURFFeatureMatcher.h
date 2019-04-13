@@ -6,9 +6,15 @@
  *
  */
 
-#include "IFeatureMatcher.h"
+#ifndef GPU_SURF_FEATURE_MATCHER_H
+#define GPU_SURF_FEATURE_MATCHER_H
+
+// OpenCV
 #include <opencv2/gpu/gpu.hpp>
 #include <opencv2/nonfree/gpu.hpp>
+
+// Original
+#include "feature2d/IFeatureMatcher.h"
 
 class GPUSURFFeatureMatcher : public IFeatureMatcher {
 public:
@@ -27,3 +33,5 @@ private:
 	std::vector<std::vector<cv::KeyPoint> >& m_imgPts;
 	bool use_ratio_test;
 };
+
+#endif // GPU_SURF_FEATURE_MATCHER_H

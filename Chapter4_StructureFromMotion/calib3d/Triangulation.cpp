@@ -9,9 +9,11 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#include "Triangulation.h"
-
+// STD
 #include <iostream>
+
+// Original
+#include "calib3d/Triangulation.h"
 
 using namespace std;
 using namespace cv;

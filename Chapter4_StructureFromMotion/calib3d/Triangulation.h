@@ -9,8 +9,13 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef TRIANGULATION_H
+#define TRIANGULATION_H
 
+// STL
+#include <vector>
+
+// OpenCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
@@ -18,9 +23,9 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #endif
-#include <vector>
 
-#include "Common.h"
+// Original
+#include "common/Common.h"
 
 /**
  From "Triangulation", Hartley, R.I. and Sturm, P., Computer vision and image understanding, 1997
@@ -50,3 +55,5 @@ double TriangulatePoints(const std::vector<cv::KeyPoint>& pt_set1,
 					   const cv::Matx34d& P1,
 					   std::vector<CloudPoint>& pointcloud,
 					   std::vector<cv::KeyPoint>& correspImg1Pt);
+
+#endif // TRIANGULATION_H

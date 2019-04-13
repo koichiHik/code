@@ -9,13 +9,15 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#include "MultiCameraPnP.h"
-#include "BundleAdjuster.h"
-
-using namespace std;
-
+// OpenCV
 #include <opencv2/gpu/gpu.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
+
+// Original
+#include "calib3d/MultiCameraPnP.h"
+#include "bundleadjust/BundleAdjuster.h"
+
+using namespace std;
 
 bool sort_by_first(pair<int,pair<int,int> > a, pair<int,pair<int,int> > b) { return a.first < b.first; }
 

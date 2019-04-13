@@ -9,12 +9,15 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef FIND_CAMERA_MATRICES_H
+#define FIND_CAMERA_MATRICES_H
 
+// OpenCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
 
-#include "Common.h"
+// Original
+#include "common/Common.h"
 
 //#undef __SFM__DEBUG__
 
@@ -46,3 +49,5 @@ bool FindCameraMatrices(const cv::Mat& K,
 						,const cv::Mat& = cv::Mat(), const cv::Mat& = cv::Mat()
 #endif
 						);
+
+#endif // FIND_CAMERA_MATRICES_H

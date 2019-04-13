@@ -9,14 +9,15 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#include "BundleAdjuster.h"
-#include "Common.h"
-
+// SSBA Header
 #define V3DLIB_ENABLE_SUITESPARSE
-
 #include <Math/v3d_linear.h>
 #include <Base/v3d_vrmlio.h>
 #include <Geometry/v3d_metricbundle.h>
+
+// Original Header
+#include "common/Common.h"
+#include "bundleadjust/BundleAdjuster.h"
 
 using namespace V3D;
 using namespace std;

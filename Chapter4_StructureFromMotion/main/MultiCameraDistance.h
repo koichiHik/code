@@ -9,17 +9,23 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef MULTI_CAMERA_DISTANCE_H
+#define MULTI_CAMERA_DISTANCE_H
 
-#include <opencv2/opencv.hpp>
+// STL
 #include <vector>
+
+// Boost
 #include <utility>
 
-#include "IDistance.h"
-#include "Triangulation.h"
-#include "IFeatureMatcher.h"
-#include "FindCameraMatrices.h"
+// OpenCV
+#include <opencv2/opencv.hpp>
 
+// Original
+#include "main/IDistance.h"
+#include "calib3d/Triangulation.h"
+#include "feature2d/IFeatureMatcher.h"
+#include "calib3d/FindCameraMatrices.h"
 
 class MultiCameraDistance  : public IDistance {	
 protected:
@@ -77,3 +83,5 @@ public:
 	virtual void OnlyMatchFeatures(int strategy = STRATEGY_USE_FEATURE_MATCH);	
 //	bool CheckCoherentRotation(cv::Mat_<double>& R);
 };
+
+#endif // MULTI_CAMERA_DISTANCE_H

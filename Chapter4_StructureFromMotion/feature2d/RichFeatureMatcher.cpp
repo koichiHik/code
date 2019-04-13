@@ -9,22 +9,26 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#include "RichFeatureMatcher.h"
+// STD
+#include <iostream>
 
-#include "FindCameraMatrices.h"
+// STL
+#include <set>
+
+// OpenCV
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/video/tracking.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 
-#include <iostream>
-#include <set>
+// Original
+#include "feature2d/RichFeatureMatcher.h"
+#include "calib3d/FindCameraMatrices.h"
 
 using namespace std;
 using namespace cv;
 
-//c'tor
 RichFeatureMatcher::RichFeatureMatcher(std::vector<cv::Mat>& imgs_, 
 									   std::vector<std::vector<cv::KeyPoint> >& imgpts_) :
 	imgpts(imgpts_), imgs(imgs_)

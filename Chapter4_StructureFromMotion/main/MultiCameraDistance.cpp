@@ -9,10 +9,11 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#include "MultiCameraDistance.h"
-#include "RichFeatureMatcher.h"
-#include "OFFeatureMatcher.h"
-#include "GPUSURFFeatureMatcher.h"
+// Original
+#include "main/MultiCameraDistance.h"
+#include "feature2d/RichFeatureMatcher.h"
+#include "feature2d/OFFeatureMatcher.h"
+#include "feature2d/GPUSURFFeatureMatcher.h"
 
 //c'tor
 MultiCameraDistance::MultiCameraDistance(
