@@ -8,24 +8,24 @@
 
 #include "IFeatureMatcher.h"
 #include <opencv2/gpu/gpu.hpp>
+#include <opencv2/nonfree/gpu.hpp>
 
 class GPUSURFFeatureMatcher : public IFeatureMatcher {
-private:
-	cv::Ptr<cv::gpu::SURF_GPU> extractor;
-	
-	std::vector<cv::gpu::GpuMat> descriptors;
-	
-	std::vector<cv::gpu::GpuMat> imgs; 
-	std::vector<cv::gpu::GpuMat> imggpupts;
-	std::vector<std::vector<cv::KeyPoint> >& imgpts;
-
-	bool use_ratio_test;
 public:
-	//c'tor
 	GPUSURFFeatureMatcher(std::vector<cv::Mat>& imgs, 
 					   std::vector<std::vector<cv::KeyPoint> >& imgpts);
 	
 	void MatchFeatures(int idx_i, int idx_j, std::vector<cv::DMatch>* matches = NULL);
 	
-	std::vector<cv::KeyPoint> GetImagePoints(int idx) { return imgpts[idx]; }
+	std::vector<cv::KeyPoint> GetImagePoints(int idx) {
+		return m_imgPts[idx]; 
+	}
+
+private:
+	cv::Ptr<cv::gpu::SURF_GPU> m_extractor;
+	std::vector<cv::gpu::GpuMat> m_descriptorsOnGpu;
+	//std::vector<cv::gpu::GpuMat> m_imgsOnGpu;
+	//std::vector<cv::gpu::GpuMat> imgPtsOnGpu;
+	std::vector<std::vector<cv::KeyPoint> >& m_imgPts;
+	bool use_ratio_test;
 };

@@ -23,39 +23,41 @@ using namespace cv;
 using namespace cv::gpu;
 
 //c'tor
-GPUSURFFeatureMatcher::GPUSURFFeatureMatcher(vector<cv::Mat>& imgs_, 
-									   vector<std::vector<cv::KeyPoint> >& imgpts_) :
-	imgpts(imgpts_),use_ratio_test(true)
+GPUSURFFeatureMatcher::GPUSURFFeatureMatcher(
+	vector<cv::Mat>& imgs_,
+	vector<std::vector<cv::KeyPoint> >& imgpts_
+	) : m_imgPts(imgpts_),use_ratio_test(true)
 {
 	// The helper function printShortCudaDeviceInfo() moved between OpenCV v2.3 and v2.4, so might not compile.
 	//printShortCudaDeviceInfo(cv::gpu::getDevice());
 
-	extractor = new gpu::SURF_GPU();
+	m_extractor = new gpu::SURF_GPU();
 	
 	std::cout << " -------------------- extract feature points for all images (GPU) -------------------\n";
 	
-	imgpts.resize(imgs_.size());
-	descriptors.resize(imgs_.size());
+	m_imgPts.resize(imgs_.size());
+	m_descriptorsOnGpu.resize(imgs_.size());
 
 	CV_PROFILE("extract",
 	for(int img_i=0;img_i<imgs_.size();img_i++) {
 		GpuMat _m; _m.upload(imgs_[img_i]);
-		(*extractor)(_m,GpuMat(),imgpts[img_i],descriptors[img_i]);
+		(*m_extractor)(_m,GpuMat(),m_imgPts[img_i],m_descriptorsOnGpu[img_i]);
 		cout << ".";
 	}
 	)
 }	
 
 void GPUSURFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* matches) {
-	
+/*	
 #ifdef __SFM__DEBUG__
-	Mat img_1; imgs[idx_i].download(img_1);
-	Mat img_2; imgs[idx_j].download(img_2);
+	Mat img_1; m_imgsOnGpu[idx_i].download(img_1);
+	Mat img_2; m_imgsOnGpu[idx_j].download(img_2);
 #endif
-	const vector<KeyPoint>& imgpts1 = imgpts[idx_i];
-	const vector<KeyPoint>& imgpts2 = imgpts[idx_j];
-	const GpuMat& descriptors_1 = descriptors[idx_i];
-	const GpuMat& descriptors_2 = descriptors[idx_j];
+*/
+	const vector<KeyPoint>& imgpts1 = m_imgPts[idx_i];
+	const vector<KeyPoint>& imgpts2 = m_imgPts[idx_j];
+	const GpuMat& descriptors_1 = m_descriptorsOnGpu[idx_i];
+	const GpuMat& descriptors_2 = m_descriptorsOnGpu[idx_j];
 	
 	std::vector< DMatch > good_matches_,very_good_matches_;
 	std::vector<KeyPoint> keypoints_1, keypoints_2;

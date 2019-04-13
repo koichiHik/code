@@ -9,11 +9,14 @@ if(EIGEN_INCLUDE_DIRS) # if compiling with PCL, it will bring Eigen with it
 endif()
 
 set(SSBA_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/3rdparty/SSBA-3.0/build" CACHE PATH "Directory to find SSBA libs")
+find_package(OpenCV REQUIRED CONFIG PATHS ${OpenCV_DIR} NO_DEFAULT_PATH)
 
-find_package(OpenCV REQUIRED)
+find_package(CUDA REQUIRED)
+
 find_package(OpenMP REQUIRED)
 link_directories(
 	${SSBA_LIBRARY_DIR}
+  ${OpenCV_INSTALL_PATH}
 	)
 
 IF(APPLE)
