@@ -1,4 +1,3 @@
-#pragma once
 /*
  *  SfMUpdateListener.h
  *  SfMToyExample
@@ -6,6 +5,14 @@
  *  Created by Roy Shilkrot on 10/7/12.
  *
  */
+
+#ifndef SFM_UPDATE_LISTENER_H
+#define SFM_UPDATE_LISTENER_H
+
+// STL
+#include <vector>
+
+// OpenCV
 #include <opencv2/core/core.hpp>
 
 class SfMUpdateListener
@@ -17,3 +24,5 @@ public:
 						std::vector<cv::Vec3b> pcldrgb_alternate, 
 						std::vector<cv::Matx34d> cameras) = 0;
 };
+
+#endif // SFM_UPDATE_LISTENER_H

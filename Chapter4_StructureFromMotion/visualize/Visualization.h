@@ -9,11 +9,15 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#pragma once
+#ifndef VISUALIZATION_H
+#define VISUALIZATION_H
 
+// STL
+#include <vector>
+
+// OpenCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
-#include <vector>
 
 void RunVisualizationThread();
 void WaitForVisualizationThread();
@@ -32,3 +36,5 @@ void ShowCloud(const std::vector<cv::Point3d>& pointcloud,
 
 void visualizerShowCamera(const float R[9], const float t[3], float r, float g, float b);
 void visualizerShowCamera(const cv::Matx33f& R, const cv::Vec3f& t, float r, float g, float b, double s, const std::string& name = "");
+
+#endif // VISUALIZATION_H

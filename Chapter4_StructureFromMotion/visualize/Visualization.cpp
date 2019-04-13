@@ -9,8 +9,13 @@
 *   http://www.packtpub.com/cool-projects-with-opencv/book
 *****************************************************************************/
 
-#include "Visualization.h"
+// Boost
+#include <boost/thread.hpp>
 
+// EIGEN
+#include <Eigen/Eigen>
+
+// PCL
 #include <pcl/common/common.h>
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/visualization/pcl_visualizer.h>
@@ -24,14 +29,13 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/filters/statistical_outlier_removal.h>
 #include <pcl/filters/voxel_grid.h>
-
 #include <pcl/ros/conversions.h>
 
-#include <boost/thread.hpp>
-
+// OpenCV
 #include <opencv2/core/core.hpp>
 
-#include <Eigen/Eigen>
+// Original
+#include "visualize/Visualization.h"
 
 using namespace std;
 using namespace Eigen;
