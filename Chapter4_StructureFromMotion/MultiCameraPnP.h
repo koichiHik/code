@@ -25,21 +25,30 @@ public:
 		const std::vector<std::string>& imgs_names_, 
 		const std::string& imgs_path_):
 	MultiCameraDistance(imgs_,imgs_names_,imgs_path_) 
-	{
-	}
+	{}
 
 	virtual void RecoverDepthFromImages();
 
-	std::vector<cv::Point3d> getPointCloudBeforeBA() { return CloudPointsToPoints(pointcloud_beforeBA); }
-	const std::vector<cv::Vec3b>& getPointCloudRGBBeforeBA() { return pointCloudRGB_beforeBA; }
+	std::vector<cv::Point3d> getPointCloudBeforeBA() { 
+		return CloudPointsToPoints(pointcloud_beforeBA); 
+	}
+
+	const std::vector<cv::Vec3b>& getPointCloudRGBBeforeBA() { 
+		return pointCloudRGB_beforeBA; 
+	}
 
 private:
 	void PruneMatchesBasedOnF();
+
 	void AdjustCurrentBundle();
+
 	void GetBaseLineTriangulation();
-	void Find2D3DCorrespondences(int working_view, 
+
+	void Find2D3DCorrespondences(
+		int working_view, 
 		std::vector<cv::Point3f>& ppcloud, 
 		std::vector<cv::Point2f>& imgPoints);
+
 	bool FindPoseEstimation(
 		int working_view,
 		cv::Mat_<double>& rvec,
@@ -47,6 +56,7 @@ private:
 		cv::Mat_<double>& R,
 		std::vector<cv::Point3f> ppcloud,
 		std::vector<cv::Point2f> imgPoints);
+
 	bool TriangulatePointsBetweenViews(
 		int working_view, 
 		int second_view,
@@ -55,6 +65,7 @@ private:
 		);
 	
 	int FindHomographyInliers2Views(int vi, int vj);
+
 	int m_first_view;
 	int m_second_view; //baseline's second view other to 0
 	std::set<int> done_views;

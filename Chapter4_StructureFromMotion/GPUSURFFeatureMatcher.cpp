@@ -22,15 +22,11 @@ using namespace std;
 using namespace cv;
 using namespace cv::gpu;
 
-//c'tor
 GPUSURFFeatureMatcher::GPUSURFFeatureMatcher(
 	vector<cv::Mat>& imgs_,
 	vector<std::vector<cv::KeyPoint> >& imgpts_
 	) : m_imgPts(imgpts_),use_ratio_test(true)
 {
-	// The helper function printShortCudaDeviceInfo() moved between OpenCV v2.3 and v2.4, so might not compile.
-	//printShortCudaDeviceInfo(cv::gpu::getDevice());
-
 	m_extractor = new gpu::SURF_GPU();
 	
 	std::cout << " -------------------- extract feature points for all images (GPU) -------------------\n";
@@ -48,12 +44,7 @@ GPUSURFFeatureMatcher::GPUSURFFeatureMatcher(
 }	
 
 void GPUSURFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* matches) {
-/*	
-#ifdef __SFM__DEBUG__
-	Mat img_1; m_imgsOnGpu[idx_i].download(img_1);
-	Mat img_2; m_imgsOnGpu[idx_j].download(img_2);
-#endif
-*/
+
 	const vector<KeyPoint>& imgpts1 = m_imgPts[idx_i];
 	const vector<KeyPoint>& imgpts2 = m_imgPts[idx_j];
 	const GpuMat& descriptors_1 = m_descriptorsOnGpu[idx_i];

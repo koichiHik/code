@@ -51,31 +51,35 @@ int main(int argc, char** argv) {
 	}
 	
 	double downscale_factor = 1.0;
-	if(argc >= 5)
+	if(argc >= 5) {
 		downscale_factor = atof(argv[4]);
+	}
 
-	open_imgs_dir(argv[1],images,images_names,downscale_factor);
+	open_imgs_dir(argv[1], images, images_names, downscale_factor);
 	if(images.size() == 0) { 
 		cerr << "can't get image files" << endl;
 		return 1;
 	}
-
 	
 	cv::Ptr<MultiCameraPnP> distance = new MultiCameraPnP(images,images_names,string(argv[1]));
-	if(argc < 3)
+	if(argc < 3) {
 		distance->use_rich_features = true;
-	else
+	} else {
 		distance->use_rich_features = (strcmp(argv[2], "RICH") == 0);
+	}
 	
-	if(argc < 4)
+	if(argc < 4) {
 		distance->use_gpu = (cv::gpu::getCudaEnabledDeviceCount() > 0);
-	else
+	} else {
 		distance->use_gpu = (strcmp(argv[3], "GPU") == 0);
+	}
 	
+	// X. Visualization の準備．
 	cv::Ptr<VisualizerListener> visualizerListener = new VisualizerListener; //with ref-count
 	distance->attach(visualizerListener);
 	RunVisualizationThread();
 
+	// X. 深度計算．
 	distance->RecoverDepthFromImages();
 
 	//get the scale of the result cloud using PCA

@@ -24,8 +24,6 @@ public:
 private:
 	cv::Ptr<cv::gpu::SURF_GPU> m_extractor;
 	std::vector<cv::gpu::GpuMat> m_descriptorsOnGpu;
-	//std::vector<cv::gpu::GpuMat> m_imgsOnGpu;
-	//std::vector<cv::gpu::GpuMat> imgPtsOnGpu;
 	std::vector<std::vector<cv::KeyPoint> >& m_imgPts;
 	bool use_ratio_test;
 };

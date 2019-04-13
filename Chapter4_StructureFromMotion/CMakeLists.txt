@@ -35,7 +35,7 @@ set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D__SFM__DEBUG__" )
 
 # Core functions of SfM
 file(GLOB SFM_LIB_SOURCES	
-	Distance.* 
+	#Distance.* 
 	Triangulation.* 
 	FindCameraMatrices.*
 	MultiCameraDistance.*
@@ -47,7 +47,7 @@ file(GLOB SFM_LIB_SOURCES
 	OFFeatureMatcher.*
 	BundleAdjuster.*
 	GPUSURFFeatureMatcher.*
-	AbstractFeatureMatcher.*
+	#AbstractFeatureMatcher.*
 	SfMUpdateListener.*
 )
 
