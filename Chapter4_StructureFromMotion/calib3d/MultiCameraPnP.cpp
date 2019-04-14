@@ -10,8 +10,9 @@
 *****************************************************************************/
 
 // OpenCV
-#include <opencv2/gpu/gpu.hpp>
+#include "opencv2/core/cuda.hpp"
 #include <opencv2/calib3d/calib3d.hpp>
+#include "opencv2/cudalegacy.hpp"
 
 // Original
 #include "calib3d/MultiCameraPnP.h"
@@ -224,10 +225,9 @@ bool MultiCameraPnP::FindPoseEstimation(
 		cv::Mat ppcloud_m(ppcloud); ppcloud_m = ppcloud_m.t();
 		cv::Mat imgPoints_m(imgPoints); imgPoints_m = imgPoints_m.t();
 		cv::Mat rvec_,t_;
-		cv::gpu::solvePnPRansac(
+		cv::cuda::solvePnPRansac(
 				ppcloud_m, imgPoints_m, m_camPar.K32f, m_camPar.distCoeff32f, 
 				rvec_,t_,false);
-
 		rvec_.convertTo(rvec,CV_64FC1);
 		t_.convertTo(t,CV_64FC1);
 	}

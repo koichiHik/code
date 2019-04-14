@@ -14,7 +14,7 @@
 #include <string.h>
 
 // OpenCV
-#include <opencv2/gpu/gpu.hpp>
+#include <opencv2/core/cuda.hpp>
 
 // Original
 #include "main/Distance.h"
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
 	}
 	
 	if(argc < 4) {
-		distance->use_gpu = (cv::gpu::getCudaEnabledDeviceCount() > 0);
+		distance->use_gpu = (cv::cuda::getCudaEnabledDeviceCount() > 0);
 	} else {
 		distance->use_gpu = (strcmp(argv[3], "GPU") == 0);
 	}

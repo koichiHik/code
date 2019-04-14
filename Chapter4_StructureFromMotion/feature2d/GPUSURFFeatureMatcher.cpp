@@ -14,6 +14,7 @@
 
 // OpenCV
 #include <opencv2/features2d/features2d.hpp>
+#include <opencv2/cudafeatures2d.hpp>
 
 // Original
 #include "feature2d/GPUSURFFeatureMatcher.h"
@@ -21,14 +22,13 @@
 
 using namespace std;
 using namespace cv;
-using namespace cv::gpu;
 
 GPUSURFFeatureMatcher::GPUSURFFeatureMatcher(
 	vector<cv::Mat>& imgs_,
 	vector<std::vector<cv::KeyPoint> >& imgpts_
 	) : m_imgPts(imgpts_),use_ratio_test(true)
 {
-	m_extractor = new gpu::SURF_GPU();
+	m_extractor = new cuda::SURF_CUDA();
 	
 	std::cout << " -------------------- extract feature points for all images (GPU) -------------------\n";
 	
@@ -37,8 +37,8 @@ GPUSURFFeatureMatcher::GPUSURFFeatureMatcher(
 
 	CV_PROFILE("extract",
 	for(int img_i=0;img_i<imgs_.size();img_i++) {
-		GpuMat _m; _m.upload(imgs_[img_i]);
-		(*m_extractor)(_m,GpuMat(),m_imgPts[img_i],m_descriptorsOnGpu[img_i]);
+		cuda::GpuMat _m; _m.upload(imgs_[img_i]);
+		(*m_extractor)(_m,cuda::GpuMat(),m_imgPts[img_i],m_descriptorsOnGpu[img_i]);
 		cout << ".";
 	}
 	)
@@ -48,8 +48,8 @@ void GPUSURFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* 
 
 	const vector<KeyPoint>& imgpts1 = m_imgPts[idx_i];
 	const vector<KeyPoint>& imgpts2 = m_imgPts[idx_j];
-	const GpuMat& descriptors_1 = m_descriptorsOnGpu[idx_i];
-	const GpuMat& descriptors_2 = m_descriptorsOnGpu[idx_j];
+	const cuda::GpuMat& descriptors_1 = m_descriptorsOnGpu[idx_i];
+	const cuda::GpuMat& descriptors_2 = m_descriptorsOnGpu[idx_j];
 	
 	std::vector< DMatch > good_matches_,very_good_matches_;
 	std::vector<KeyPoint> keypoints_1, keypoints_2;
@@ -68,7 +68,8 @@ void GPUSURFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* 
 	}
 	
 	//matching descriptor vectors using Brute Force matcher
-	BruteForceMatcher_GPU<L2<float> > matcher;
+	cv::Ptr<cv::cuda::DescriptorMatcher> matcher = cv::cuda::DescriptorMatcher::createBFMatcher();
+	//BruteForceMatcher_GPU<L2<float> > matcher;
 	std::vector< DMatch > matches_;
 	if (matches == NULL) {
 		matches = &matches_;
@@ -78,10 +79,10 @@ void GPUSURFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* 
 
 		if(use_ratio_test) {
 			vector<vector<DMatch> > knn_matches;
-			GpuMat trainIdx,distance,allDist;
-			CV_PROFILE("match", 
-				matcher.knnMatchSingle(descriptors_1,descriptors_2,trainIdx,distance,allDist,2); 
-				matcher.knnMatchDownload(trainIdx,distance,knn_matches);
+			CV_PROFILE(
+				"match", 
+				matcher->knnMatch(descriptors_1, descriptors_2, knn_matches, 2); 
+				//matcher.knnMatchDownload(trainIdx,distance,knn_matches);
 			)
 
 			(*matches).clear();
@@ -94,7 +95,10 @@ void GPUSURFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* 
 			}
 			cout << "kept " << (*matches).size() << " features after ratio test"<<endl;
 		} else {
-			CV_PROFILE("match",matcher.match( descriptors_1, descriptors_2, *matches );)
+			CV_PROFILE(
+				"match",
+				matcher->match( descriptors_1, descriptors_2, *matches );
+			)
 		}
 	}
 }

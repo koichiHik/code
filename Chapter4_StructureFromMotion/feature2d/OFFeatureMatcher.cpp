@@ -12,7 +12,8 @@
 #include "OFFeatureMatcher.h"
 #include <opencv2/video/video.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/gpu/gpu.hpp>
+#include <opencv2/core/cuda.hpp>
+#include <opencv2/cudaoptflow.hpp>
 #include <opencv2/flann/flann.hpp>
 
 #ifdef __SFM__DEBUG__
@@ -34,9 +35,10 @@ OFFeatureMatcher::OFFeatureMatcher(
 AbstractFeatureMatcher(_use_gpu),imgpts(imgpts_), imgs(imgs_)
 {
 	//detect keypoints for all images
-	FastFeatureDetector ffd;
+	cv::Ptr<FastFeatureDetector> ffd = FastFeatureDetector::create();
+	//FastFeatureDetector ffd;
 //	DenseFeatureDetector ffd;
-	ffd.detect(imgs, imgpts);
+	ffd->detect(imgs, imgpts);
 }
 
 void OFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* matches) {	
@@ -58,13 +60,13 @@ void OFFeatureMatcher::MatchFeatures(int idx_i, int idx_j, vector<DMatch>* match
 	vector<uchar> vstatus(i_pts.size()); vector<float> verror(i_pts.size());
 
 	if(use_gpu) {
-		gpu::GpuMat gpu_prevImg,gpu_nextImg,gpu_prevPts,gpu_nextPts,gpu_status,gpu_error;
+		cuda::GpuMat gpu_prevImg, gpu_nextImg, gpu_prevPts, gpu_nextPts, gpu_status, gpu_error;
 		gpu_prevImg.upload(prevgray);
 		gpu_nextImg.upload(gray);
 		gpu_prevPts.upload(Mat(i_pts).t());
 
-		gpu::PyrLKOpticalFlow gpu_of;
-		gpu_of.sparse(gpu_prevImg,gpu_nextImg,gpu_prevPts,gpu_nextPts,gpu_status,&gpu_error);
+		cv::Ptr<cuda::SparsePyrLKOpticalFlow> gpu_of = cuda::SparsePyrLKOpticalFlow::create();
+		gpu_of->calc(gpu_prevImg, gpu_nextImg, gpu_prevPts, gpu_nextPts, gpu_status, gpu_error);
 
 		Mat j_pts_mat;
 		gpu_nextPts.download(j_pts_mat);

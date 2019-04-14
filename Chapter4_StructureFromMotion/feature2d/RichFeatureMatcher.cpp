@@ -33,8 +33,10 @@ RichFeatureMatcher::RichFeatureMatcher(std::vector<cv::Mat>& imgs_,
 									   std::vector<std::vector<cv::KeyPoint> >& imgpts_) :
 	imgpts(imgpts_), imgs(imgs_)
 {
-	detector = FeatureDetector::create("PyramidFAST");
-	extractor = DescriptorExtractor::create("ORB");
+    detector = FastFeatureDetector::create();
+	//detector = FeatureDetector::create("PyramidFAST");
+    extractor = ORB::create();
+	//extractor = DescriptorExtractor::create("ORB");
 	
 	std::cout << " -------------------- extract feature points for all images -------------------\n";
 	detector->detect(imgs, imgpts);

@@ -13,6 +13,9 @@ find_package(OpenCV REQUIRED CONFIG PATHS ${OpenCV_DIR} NO_DEFAULT_PATH)
 find_package(CUDA REQUIRED)
 find_package(OpenMP REQUIRED)
 
+include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${CUDA_INCLUDE_DIRS})
+
 link_directories(
 	${SSBA_LIBRARY_DIR}
   ${OpenCV_INSTALL_PATH}

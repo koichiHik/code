@@ -10,8 +10,8 @@
 #define GPU_SURF_FEATURE_MATCHER_H
 
 // OpenCV
-#include <opencv2/gpu/gpu.hpp>
-#include <opencv2/nonfree/gpu.hpp>
+#include <opencv2/core/cuda.hpp>
+#include <opencv2/xfeatures2d/cuda.hpp>
 
 // Original
 #include "feature2d/IFeatureMatcher.h"
@@ -28,8 +28,8 @@ public:
 	}
 
 private:
-	cv::Ptr<cv::gpu::SURF_GPU> m_extractor;
-	std::vector<cv::gpu::GpuMat> m_descriptorsOnGpu;
+	cv::Ptr<cv::cuda::SURF_CUDA> m_extractor;
+	std::vector<cv::cuda::GpuMat> m_descriptorsOnGpu;
 	std::vector<std::vector<cv::KeyPoint> >& m_imgPts;
 	bool use_ratio_test;
 };
