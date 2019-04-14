@@ -17,6 +17,8 @@
 #include "visualize/SfMUpdateListener.h"
 
 class MultiCameraPnP : public MultiCameraDistance {
+
+private:
 	std::vector<CloudPoint> pointcloud_beforeBA;
 	std::vector<cv::Vec3b> pointCloudRGB_beforeBA;
 
@@ -24,8 +26,8 @@ public:
 	MultiCameraPnP(
 		const std::vector<cv::Mat>& imgs_, 
 		const std::vector<std::string>& imgs_names_, 
-		const std::string& imgs_path_):
-	MultiCameraDistance(imgs_,imgs_names_,imgs_path_) 
+		const std::string& imgs_path_
+		) : MultiCameraDistance(imgs_,imgs_names_,imgs_path_) 
 	{}
 
 	virtual void RecoverDepthFromImages();
@@ -67,10 +69,10 @@ private:
 	
 	int FindHomographyInliers2Views(int vi, int vj);
 
-	int m_first_view;
-	int m_second_view; //baseline's second view other to 0
-	std::set<int> done_views;
-	std::set<int> good_views;
+	int m_firstViewIdx;
+	int m_secondViewIdx;
+	std::set<int> m_doneViews;
+	std::set<int> m_goodViews;
 	
 /********** Subject / Objserver **********/
 	std::vector < SfMUpdateListener * > listeners;

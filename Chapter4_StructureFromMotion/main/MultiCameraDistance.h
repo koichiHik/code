@@ -57,9 +57,9 @@ protected:
 	CamParams m_camPar;
 
 	// Point Cloud
-	std::vector<CloudPoint> pcloud;
-	std::vector<cv::Vec3b> pointCloudRGB;
-	std::vector<cv::KeyPoint> correspImg1Pt; //TODO: remove
+	std::vector<CloudPoint> m_pointCloud;
+	std::vector<cv::Vec3b> m_pointCloudRGB;
+	std::vector<cv::KeyPoint> m_correspImg1Pt; //TODO: remove
 	
 	cv::Ptr<IFeatureMatcher> feature_matcher;
 	
@@ -69,7 +69,7 @@ public:
 	bool use_gpu;
 
 	std::vector<cv::Point3d> getPointCloud() { 
-		return CloudPointsToPoints(pcloud); 
+		return CloudPointsToPoints(m_pointCloud); 
 	}
 
 	const cv::Mat& get_im_orig(int frame_num) {
@@ -77,10 +77,16 @@ public:
 	}
 
 	const std::vector<cv::KeyPoint>& getcorrespImg1Pt() { 
-		return correspImg1Pt; 
+		return m_correspImg1Pt; 
 	}
 
-	const std::vector<cv::Vec3b>& getPointCloudRGB() { if(pointCloudRGB.size()==0) { GetRGBForPointCloud(pcloud,pointCloudRGB); } return pointCloudRGB; }
+	const std::vector<cv::Vec3b>& getPointCloudRGB() { 
+		if(m_pointCloudRGB.size()==0) { 
+			GetRGBForPointCloud(m_pointCloud, m_pointCloudRGB); 
+		} 
+		return m_pointCloudRGB; 
+	}
+
 	std::vector<cv::Matx34d> getCameras() { 
 		std::vector<cv::Matx34d> v; 
 		for(std::map<int ,cv::Matx34d>::const_iterator it = m_poseMats.begin(); 
